@@ -64,7 +64,10 @@ export function readDesktopSettings(settingsPath: string, appVersion: string): D
       parsed.updateChannel === "nightly" || parsed.updateChannel === "latest"
         ? parsed.updateChannel
         : null;
-    const updateChannelConfiguredByUser = parsed.updateChannelConfiguredByUser === true;
+    const isLegacySettings = parsed.updateChannelConfiguredByUser === undefined;
+    const updateChannelConfiguredByUser =
+      parsed.updateChannelConfiguredByUser === true ||
+      (isLegacySettings && parsedUpdateChannel === "nightly");
 
     return {
       serverExposureMode:
