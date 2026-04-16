@@ -1802,12 +1802,13 @@ function registerIpcHandlers(): void {
     }
 
     const nextChannel = rawChannel as DesktopUpdateChannel;
-    if (nextChannel === desktopSettings.updateChannel) {
-      return updateState;
-    }
 
     desktopSettings = setDesktopUpdateChannelPreference(desktopSettings, nextChannel);
     writeDesktopSettings(DESKTOP_SETTINGS_PATH, desktopSettings);
+
+    if (nextChannel === updateState.channel) {
+      return updateState;
+    }
 
     const enabled = shouldEnableAutoUpdates();
     setUpdateState(createBaseUpdateState(nextChannel, enabled));
